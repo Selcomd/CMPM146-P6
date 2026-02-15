@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 from tensorflow.keras.utils import plot_model
 from tensorflow.keras.models import load_model
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
 class Model:
     def __init__(self, input_shape, categories_count):
@@ -17,13 +17,19 @@ class Model:
         raise Exception("define_model not implemented yet.")
 
     def train_model(self, train_dataset, validation_dataset, epochs):
+        class_weights = {0: 1.0, 1: 1.4, 2: 2.0}
 
         callbacks = [
             EarlyStopping(
                 monitor='val_loss', 
                 patience=5, 
                 restore_best_weights=True,
-                verbose=1
+            ),
+            ReduceLROnPlateau(
+                monitor='val_loss', 
+                factor=0.2, 
+                patience=3, 
+                min_lr=0.00001,
             )
         ]
 
@@ -33,6 +39,7 @@ class Model:
             verbose="auto",
             validation_data=validation_dataset,
             callbacks=callbacks,
+            class_weight=class_weights
         )
 
 
