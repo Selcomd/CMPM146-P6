@@ -94,21 +94,17 @@ class UserWebcamPlayer:
             raise e
     
     def _get_emotion(self, img) -> int:
-        # Your code goes here
-        #
-        # img an np array of size NxN (square), each pixel is a value between 0 to 255
-        # you have to resize this to image_size before sending to your model
-        # to show the image here, you can use:
-        # import matplotlib.pyplot as plt
-        # plt.imshow(img, cmap='gray', vmin=0, vmax=255)
-        # plt.show()
-        #
-        # You have to use your saved model, use resized img as input, and get one classification value out of it
-        # The classification value should be 0, 1, or 2 for neutral, happy or surprise respectively
+        if not hasattr(self, "model"):
+            self.model = models.load_model("results/basic_model_30_epochs_timestamp_1771212638.keras")
+        img_resized = cv2.resize(img, (image_size[0], image_size[1]))
 
-        # return an integer (0, 1 or 2), otherwise the code will throw an error
-        return 1
-        pass
+        img_resized = img_resized.astype("float32")
+        img_resized = cv2.cvtColor(img_resized, cv2.COLOR_GRAY2RGB)
+
+        img_resized = np.expand_dims(img_resized, axis=0)
+        predictions = self.model.predict(img_resized, verbose=0)
+
+        return int(np.argmax(predictions))
     
     def get_move(self, board_state):
         row, col = None, None
