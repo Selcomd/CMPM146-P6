@@ -1,4 +1,4 @@
-categories = ['neutral', 'happy', 'surprise']
+categories = ['happy', 'neutral', 'suprise']
 
 train_directory = 'train'
 test_directory = 'test'

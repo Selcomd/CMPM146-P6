@@ -42,7 +42,7 @@ def copy_dataset(source_directory, target_directory, categories = None, target_s
 
 
 if __name__ == "__main__":
-    source_directory = 'kaggle'
+    source_directory = 'kaggle_transfer'
     train_source_directory = os.path.join(source_directory, 'train')
     test_source_directory = os.path.join(source_directory, 'test')
     train_target_directory = train_directory

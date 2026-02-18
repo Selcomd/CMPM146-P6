@@ -18,7 +18,6 @@ class Model:
 
     def train_model(self, train_dataset, validation_dataset, epochs):
         class_weights = {0: 1.0, 1: 1.4, 2: 2.0}
-
         callbacks = [
             EarlyStopping(
                 monitor='val_loss', 
